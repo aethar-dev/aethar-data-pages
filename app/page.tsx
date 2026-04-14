@@ -46,6 +46,26 @@ export default function HomePage() {
         })}
       </div>
 
+      {/* Latest Report */}
+      <div className="mt-12">
+        <h2 className="text-lg font-semibold text-white">Latest Report</h2>
+        <Link
+          href="/reports/eu-snapshot-april-2026"
+          className="mt-4 block rounded-lg border border-[#4DD0E1]/30 bg-[#4DD0E1]/5 p-6 transition-colors hover:border-[#4DD0E1]/60"
+        >
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#4DD0E1]">
+            Weekly Data Report
+          </p>
+          <h3 className="mt-1 text-lg text-white">
+            EU Economic Snapshot — April 2026
+          </h3>
+          <p className="mt-2 text-sm text-[#8890AA]">
+            GDP growth divergence, inflation trends, unemployment comparison, and
+            population changes across 14 EU economies.
+          </p>
+        </Link>
+      </div>
+
       {/* API CTA */}
       <div className="mt-16 rounded-lg border border-[#4DD0E1]/20 bg-[#4DD0E1]/5 p-8 text-center">
         <h2 className="text-xl font-light text-white">Access this data via API</h2>

@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a href="/inflation" className="hover:text-white transition-colors">Inflation</a>
               <a href="/unemployment" className="hover:text-white transition-colors">Unemployment</a>
               <a href="/population" className="hover:text-white transition-colors">Population</a>
+              <a href="/reports/eu-snapshot-april-2026" className="hover:text-white transition-colors">Reports</a>
               <a href="https://console.aethar.dev" className="rounded bg-[#4DD0E1] px-3 py-1.5 text-[#0F1117] font-semibold hover:bg-[#4DD0E1]/90 transition-colors">
                 Get API Key
               </a>
