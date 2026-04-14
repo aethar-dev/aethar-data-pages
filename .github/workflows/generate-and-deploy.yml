@@ -29,6 +29,9 @@ jobs:
         env:
           AETHAR_API_KEY: ${{ secrets.AETHAR_API_KEY }}
 
+      - name: Generate weekly report
+        run: npx tsx scripts/generate-weekly-report.ts
+
       - name: Build
         run: npm run build
 
