@@ -1,0 +1,32 @@
+/** EU countries for SEO page generation */
+export const EU_COUNTRIES = [
+  { code: "DE", name: "Germany" },
+  { code: "FR", name: "France" },
+  { code: "PL", name: "Poland" },
+  { code: "IT", name: "Italy" },
+  { code: "ES", name: "Spain" },
+  { code: "NL", name: "Netherlands" },
+  { code: "SE", name: "Sweden" },
+  { code: "AT", name: "Austria" },
+  { code: "BE", name: "Belgium" },
+  { code: "CZ", name: "Czechia" },
+  { code: "DK", name: "Denmark" },
+  { code: "FI", name: "Finland" },
+  { code: "IE", name: "Ireland" },
+  { code: "PT", name: "Portugal" },
+  { code: "RO", name: "Romania" },
+  { code: "GR", name: "Greece" },
+  { code: "HU", name: "Hungary" },
+  { code: "SK", name: "Slovakia" },
+  { code: "BG", name: "Bulgaria" },
+  { code: "HR", name: "Croatia" },
+  { code: "LT", name: "Lithuania" },
+  { code: "SI", name: "Slovenia" },
+  { code: "LV", name: "Latvia" },
+  { code: "EE", name: "Estonia" },
+  { code: "LU", name: "Luxembourg" },
+  { code: "MT", name: "Malta" },
+  { code: "CY", name: "Cyprus" },
+] as const;
+
+export type CountryCode = (typeof EU_COUNTRIES)[number]["code"];
