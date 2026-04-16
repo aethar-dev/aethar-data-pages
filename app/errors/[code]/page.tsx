@@ -149,8 +149,7 @@ export default async function ErrorPage({
           Email{" "}
           <a href="mailto:support@aethar.dev">support@aethar.dev</a> with the{" "}
           <code>request_id</code> from the API response — we log every request
-          server-side and can trace exactly what happened. Responses within one
-          business day.
+          server-side and can trace exactly what happened.
         </p>
         <div className="err-cta-actions">
           <a href="mailto:support@aethar.dev" className="btn-primary">
