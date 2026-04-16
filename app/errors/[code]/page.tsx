@@ -6,7 +6,11 @@ export function generateStaticParams() {
   return ERROR_CATALOG.map((err) => ({ code: err.code }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ code: string }>;
+}): Promise<Metadata> {
   const { code } = await params;
   const err = getErrorDoc(code);
   return {
@@ -15,78 +19,192 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
   };
 }
 
-export default async function ErrorPage({ params }: { params: Promise<{ code: string }> }) {
+function pillClass(status: number): string {
+  if (status >= 500) return "http-pill http-pill--lg http-pill--5xx";
+  if (status >= 400) return "http-pill http-pill--lg http-pill--4xx";
+  return "http-pill http-pill--lg http-pill--2xx";
+}
+
+function detectLanguage(snippet: string): string {
+  const trimmed = snippet.trim();
+  if (trimmed.startsWith("curl") || trimmed.startsWith("GET") || trimmed.startsWith("POST") || trimmed.startsWith("PUT") || trimmed.startsWith("DELETE")) {
+    return "HTTP";
+  }
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+    return "JSON";
+  }
+  return "TEXT";
+}
+
+export default async function ErrorPage({
+  params,
+}: {
+  params: Promise<{ code: string }>;
+}) {
   const { code } = await params;
   const err = getErrorDoc(code);
 
   if (!err) {
     return (
-      <div>
-        <p className="text-xs text-[#8890AA]">
-          <Link href="/errors" className="hover:text-white">Error codes</Link> / {code}
+      <div className="err-notfound">
+        <p className="err-crumbs">
+          <Link href="/errors">Error codes</Link>
+          <span className="err-crumbs-sep">/</span>
+          <span className="err-crumbs-cat">{code}</span>
         </p>
-        <h1 className="mt-2 text-2xl font-light text-white">Error code not found</h1>
-        <p className="mt-3 text-sm text-[#8890AA]">
-          <code className="font-mono text-[#4DD0E1]">{code}</code> is not a recognized Aethar error code.
+        <h1>Error code not found</h1>
+        <p>
+          <code>{code}</code> is not a recognized Aethar error code. It may have been
+          renamed or removed — browse the full catalog for a match.
         </p>
-        <Link href="/errors" className="mt-6 inline-block rounded bg-[#4DD0E1] px-4 py-2 text-sm font-semibold text-[#0F1117]">
-          Browse all error codes
-        </Link>
+        <div style={{ marginTop: 24, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <Link href="/errors" className="btn-primary">
+            Browse all error codes
+          </Link>
+          <a href="mailto:support@aethar.dev" className="btn-secondary">
+            Contact support
+          </a>
+        </div>
       </div>
     );
   }
 
-  const statusColor = err.httpStatus >= 500 ? "text-red-400" : err.httpStatus >= 400 ? "text-orange-400" : "text-[#4DD0E1]";
-
   return (
-    <div>
-      <p className="text-xs text-[#8890AA]">
-        <Link href="/errors" className="hover:text-white">Error codes</Link>
-        {" / "}
-        <span className="text-[#4DD0E1]">{err.category}</span>
-      </p>
+    <article>
+      <nav className="err-crumbs" aria-label="Breadcrumb">
+        <Link href="/errors">Error codes</Link>
+        <span className="err-crumbs-sep">/</span>
+        <span className="err-crumbs-cat">{err.category}</span>
+      </nav>
 
-      <div className="mt-3 flex items-center gap-3">
-        <span className={`rounded bg-[#1C1F29] px-2 py-1 font-mono text-sm ${statusColor}`}>HTTP {err.httpStatus}</span>
-        <h1 className="text-2xl font-light text-white font-mono">{err.code}</h1>
-      </div>
+      <header className="err-head">
+        <div className="err-head-meta">
+          <span className={pillClass(err.httpStatus)}>HTTP {err.httpStatus}</span>
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              letterSpacing: 1.4,
+              textTransform: "uppercase",
+              color: "var(--fg-3)",
+            }}
+          >
+            {err.category}
+          </span>
+        </div>
+        <h1 className="err-head-title">{err.code}</h1>
+      </header>
 
-      <p className="mt-6 text-base leading-relaxed text-[#E0E2EF]">{err.description}</p>
+      <p className="err-description">{err.description}</p>
 
       {err.example && (
-        <div className="mt-10">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-[#8890AA]">Example</h2>
-          <div className="mt-3 space-y-3">
-            <div>
-              <p className="mb-1 font-mono text-xs text-[#8890AA]">Request</p>
-              <pre className="overflow-x-auto rounded border border-[#2A2D3A] bg-[#1C1F29] p-4 font-mono text-xs text-[#E0E2EF]">{err.example.request}</pre>
+        <section className="err-section">
+          <div className="err-section-label">Example</div>
+          <h2 className="err-section-heading">Request &amp; response</h2>
+
+          <div className="code-block">
+            <div className="code-block-header">
+              <div className="code-block-dots" aria-hidden="true">
+                <span className="code-block-dot" />
+                <span className="code-block-dot" />
+                <span className="code-block-dot" />
+              </div>
+              <span className="code-block-lang">Request &middot; {detectLanguage(err.example.request)}</span>
             </div>
-            <div>
-              <p className="mb-1 font-mono text-xs text-[#8890AA]">Response</p>
-              <pre className="overflow-x-auto rounded border border-[#2A2D3A] bg-[#1C1F29] p-4 font-mono text-xs text-[#E0E2EF]">{err.example.response}</pre>
-            </div>
+            <pre className="code-block-body">{err.example.request}</pre>
           </div>
-        </div>
+
+          <div className="code-block" style={{ marginTop: 14 }}>
+            <div className="code-block-header">
+              <div className="code-block-dots" aria-hidden="true">
+                <span className="code-block-dot" />
+                <span className="code-block-dot" />
+                <span className="code-block-dot" />
+              </div>
+              <span className="code-block-lang">Response &middot; {detectLanguage(err.example.response)}</span>
+            </div>
+            <pre className="code-block-body">{err.example.response}</pre>
+          </div>
+        </section>
       )}
 
       {err.fixSteps && err.fixSteps.length > 0 && (
-        <div className="mt-10">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-[#8890AA]">How to fix</h2>
-          <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-[#E0E2EF]">
+        <section className="err-section">
+          <div className="err-section-label">Remediation</div>
+          <h2 className="err-section-heading">How to fix</h2>
+          <ol className="err-steps">
             {err.fixSteps.map((step, i) => (
-              <li key={i}>{step}</li>
+              <li key={i} className="err-step">
+                <StepText text={step} />
+              </li>
             ))}
           </ol>
-        </div>
+        </section>
       )}
 
-      <div className="mt-12 rounded border border-[#4DD0E1]/20 bg-[#4DD0E1]/5 p-6">
-        <p className="text-sm font-semibold text-white">Still stuck?</p>
-        <p className="mt-2 text-sm text-[#8890AA]">
-          Contact support at <a href="mailto:support@aethar.dev" className="text-[#4DD0E1] hover:underline">support@aethar.dev</a> with your{" "}
-          <code className="font-mono text-xs text-[#4DD0E1]">request_id</code> — shown in the API response and in your console logs.
+      <aside className="err-cta">
+        <p className="err-cta-label">Still stuck?</p>
+        <p className="err-cta-title">Get help from the Aethar team</p>
+        <p className="err-cta-body">
+          Email{" "}
+          <a href="mailto:support@aethar.dev">support@aethar.dev</a> with the{" "}
+          <code>request_id</code> from the API response — we log every request
+          server-side and can trace exactly what happened. Responses within one
+          business day.
         </p>
-      </div>
-    </div>
+        <div className="err-cta-actions">
+          <a href="mailto:support@aethar.dev" className="btn-primary">
+            Email support
+          </a>
+          <a href="https://status.aethar.dev" className="btn-secondary">
+            Check status page
+          </a>
+        </div>
+      </aside>
+    </article>
+  );
+}
+
+/**
+ * Auto-wrap URLs and inline code markers in a fix step.
+ * Very light — just makes URLs clickable and `backticks` render as code.
+ */
+function StepText({ text }: { text: string }) {
+  // Split on backticks first, then scan each plain segment for URLs.
+  const parts = text.split(/(`[^`]+`)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.startsWith("`") && part.endsWith("`")) {
+          return <code key={i}>{part.slice(1, -1)}</code>;
+        }
+        // Linkify URLs in this plain segment
+        const urlRegex = /(https?:\/\/[^\s)]+)/g;
+        const isUrl = (s: string) => /^https?:\/\//.test(s);
+        const subs = part.split(urlRegex);
+        return (
+          <span key={i}>
+            {subs.map((sub, j) =>
+              isUrl(sub) ? (
+                <a
+                  key={j}
+                  href={sub}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--accent)",
+                    borderBottom: "1px solid rgba(0,254,39,0.3)",
+                  }}
+                >
+                  {sub}
+                </a>
+              ) : (
+                <span key={j}>{sub}</span>
+              ),
+            )}
+          </span>
+        );
+      })}
+    </>
   );
 }
