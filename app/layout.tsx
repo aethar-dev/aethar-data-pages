@@ -38,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <a href="/inflation" className="adp-nav-link">Inflation</a>
                 <a href="/unemployment" className="adp-nav-link">Unemployment</a>
                 <a href="/population" className="adp-nav-link">Population</a>
+                <a href="/compare" className="adp-nav-link">Compare</a>
                 <a href="/errors" className="adp-nav-link">Errors</a>
                 <a href="/reports/eu-snapshot-april-2026" className="adp-nav-link">Reports</a>
                 <a href="https://console.aethar.dev" className="adp-nav-cta">

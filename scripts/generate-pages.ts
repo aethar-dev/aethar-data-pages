@@ -35,7 +35,25 @@ const EU_COUNTRIES = [
   { code: "FI", name: "Finland" },
   { code: "IE", name: "Ireland" },
   { code: "PT", name: "Portugal" },
+  { code: "RO", name: "Romania" },
+  { code: "GR", name: "Greece", eurostatCode: "EL" },
+  { code: "HU", name: "Hungary" },
+  { code: "SK", name: "Slovakia" },
+  { code: "BG", name: "Bulgaria" },
+  { code: "HR", name: "Croatia" },
+  { code: "LT", name: "Lithuania" },
+  { code: "SI", name: "Slovenia" },
+  { code: "LV", name: "Latvia" },
+  { code: "EE", name: "Estonia" },
+  { code: "LU", name: "Luxembourg" },
+  { code: "MT", name: "Malta" },
+  { code: "CY", name: "Cyprus" },
 ];
+
+/** Eurostat uses "EL" for Greece; all other countries use standard ISO codes */
+function eurostatCode(country: { code: string; eurostatCode?: string }): string {
+  return country.eurostatCode ?? country.code;
+}
 
 async function fetchApi(baseUrl: string, path: string) {
   try {
@@ -57,7 +75,7 @@ async function generateGdpPages() {
   mkdirSync(dir, { recursive: true });
 
   for (const country of EU_COUNTRIES) {
-    const data = await fetchApi(APIS.eurostat, `/v1/gdp?country=${country.code}&frequency=Q`);
+    const data = await fetchApi(APIS.eurostat, `/v1/gdp?country=${eurostatCode(country)}&frequency=Q`);
     if (data) {
       writeFileSync(
         join(dir, `${country.code.toLowerCase()}.json`),
@@ -74,7 +92,7 @@ async function generateInflationPages() {
   mkdirSync(dir, { recursive: true });
 
   for (const country of EU_COUNTRIES) {
-    const data = await fetchApi(APIS.eurostat, `/v1/inflation?country=${country.code}&months=24`);
+    const data = await fetchApi(APIS.eurostat, `/v1/inflation?country=${eurostatCode(country)}&months=24`);
     if (data) {
       writeFileSync(
         join(dir, `${country.code.toLowerCase()}.json`),
@@ -91,7 +109,7 @@ async function generateUnemploymentPages() {
   mkdirSync(dir, { recursive: true });
 
   for (const country of EU_COUNTRIES) {
-    const data = await fetchApi(APIS.eurostat, `/v1/unemployment?country=${country.code}`);
+    const data = await fetchApi(APIS.eurostat, `/v1/unemployment?country=${eurostatCode(country)}`);
     if (data) {
       writeFileSync(
         join(dir, `${country.code.toLowerCase()}.json`),
@@ -108,7 +126,7 @@ async function generatePopulationPages() {
   mkdirSync(dir, { recursive: true });
 
   for (const country of EU_COUNTRIES) {
-    const data = await fetchApi(APIS.eurostat, `/v1/population?country=${country.code}`);
+    const data = await fetchApi(APIS.eurostat, `/v1/population?country=${eurostatCode(country)}`);
     if (data) {
       writeFileSync(
         join(dir, `${country.code.toLowerCase()}.json`),
@@ -143,12 +161,13 @@ async function main() {
   console.log("\nDone! Generated data for Next.js static build.");
 }
 
-// Top 13 country pairs by SEO value
+// Top country pairs by SEO value
 const COMPARISON_PAIRS = [
   ["DE", "FR"], ["DE", "PL"], ["FR", "IT"], ["ES", "PT"],
   ["NL", "BE"], ["SE", "DK"], ["IT", "ES"], ["PL", "CZ"],
   ["AT", "DE"], ["NL", "DE"], ["FR", "ES"], ["IT", "DE"],
-  ["FI", "SE"],
+  ["FI", "SE"], ["RO", "BG"], ["GR", "CY"], ["HU", "SK"],
+  ["LT", "LV"], ["HR", "SI"], ["EE", "LT"], ["LU", "MT"],
 ];
 
 const TOPICS = ["gdp", "inflation", "unemployment", "population"];
