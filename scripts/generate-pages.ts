@@ -128,15 +128,64 @@ async function main() {
   await generateUnemploymentPages();
   await generatePopulationPages();
 
+  // Generate comparison pages from existing country data
+  await generateComparisonPages();
+
   // Write manifest
   const manifest = {
     countries: EU_COUNTRIES,
     topics: ["gdp", "inflation", "unemployment", "population"],
+    comparisons: COMPARISON_PAIRS.length,
     generatedAt: new Date().toISOString(),
   };
   writeFileSync(join(DATA_DIR, "manifest.json"), JSON.stringify(manifest, null, 2));
 
   console.log("\nDone! Generated data for Next.js static build.");
+}
+
+// Top 13 country pairs by SEO value
+const COMPARISON_PAIRS = [
+  ["DE", "FR"], ["DE", "PL"], ["FR", "IT"], ["ES", "PT"],
+  ["NL", "BE"], ["SE", "DK"], ["IT", "ES"], ["PL", "CZ"],
+  ["AT", "DE"], ["NL", "DE"], ["FR", "ES"], ["IT", "DE"],
+  ["FI", "SE"],
+];
+
+const TOPICS = ["gdp", "inflation", "unemployment", "population"];
+
+async function generateComparisonPages() {
+  console.log("Generating comparison pages...");
+  const dir = join(DATA_DIR, "compare");
+
+  let count = 0;
+  for (const topic of TOPICS) {
+    const topicDir = join(dir, topic);
+    mkdirSync(topicDir, { recursive: true });
+
+    for (const [c1, c2] of COMPARISON_PAIRS) {
+      const file1 = join(DATA_DIR, topic, `${c1.toLowerCase()}.json`);
+      const file2 = join(DATA_DIR, topic, `${c2.toLowerCase()}.json`);
+
+      try {
+        const data1 = JSON.parse(require("fs").readFileSync(file1, "utf-8"));
+        const data2 = JSON.parse(require("fs").readFileSync(file2, "utf-8"));
+
+        const slug = `${c1.toLowerCase()}-vs-${c2.toLowerCase()}`;
+        writeFileSync(
+          join(topicDir, `${slug}.json`),
+          JSON.stringify({
+            country1: data1,
+            country2: data2,
+            generatedAt: new Date().toISOString(),
+          }, null, 2),
+        );
+        count++;
+      } catch {
+        // Skip pairs where data is missing
+      }
+    }
+  }
+  console.log(`  ${count} comparison pages generated`);
 }
 
 main().catch(console.error);
