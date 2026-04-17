@@ -148,8 +148,9 @@ export default async function ErrorPage({
         <p className="err-cta-body">
           Email{" "}
           <a href="mailto:support@aethar.dev">support@aethar.dev</a> with the{" "}
-          <code>request_id</code> from the API response — we log every request
-          server-side and can trace exactly what happened.
+          <code>request_id</code> from the API response. We retain request
+          metadata server-side (based on your plan&apos;s retention window) and
+          can look up the error context.
         </p>
         <div className="err-cta-actions">
           <a href="mailto:support@aethar.dev" className="btn-primary">
