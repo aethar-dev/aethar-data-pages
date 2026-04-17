@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "EU Economic Data — Aethar",
   description:
     "Live EU economic statistics: GDP, inflation, unemployment, population, trade data for all European countries. Powered by Aethar APIs.",
+  verification: {
+    google: "drTZ1LfndZigmDPLKG9lRe-6tNeg0kgGFLjNczjXtdk",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
