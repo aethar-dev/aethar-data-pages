@@ -32,6 +32,24 @@ jobs:
       - name: Generate weekly report
         run: npx tsx scripts/generate-weekly-report.ts
 
+      # Post the new weekly report to @aethardev — runs only on Mondays
+      # (ISO day-of-week 1) on the scheduled cron, so we tweet exactly once
+      # per week with the freshly-generated numbers. Manual workflow_dispatch
+      # runs skip this step entirely (avoid accidental double-post).
+      - name: Post weekly report to X
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "$(date -u +%u)" = "1" ]; then
+            npx tsx scripts/post-weekly-tweet.ts
+          else
+            echo "Not Monday — skipping X post."
+          fi
+        env:
+          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+
       - name: Build
         run: npm run build
 
