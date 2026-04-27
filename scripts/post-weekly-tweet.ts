@@ -61,7 +61,13 @@ function getWeekSlug(): string {
   return `${new Date().getFullYear()}-w${String(getWeekNumber()).padStart(2, "0")}`;
 }
 
-function buildTweet(): string {
+interface Insights {
+  gdpTop3: { name: string; v: number }[];
+  lowestUnemp: { name: string; v: number } | null;
+  highestInfl: { name: string; v: number } | null;
+}
+
+function buildInsights(): Insights {
   const gdp = loadTopicData("gdp")
     .map((c) => ({ name: c.country.name, v: latest(c) }))
     .sort((a, b) => b.v - a.v);
@@ -73,23 +79,76 @@ function buildTweet(): string {
     .map((c) => ({ name: c.country.name, v: latest(c) }))
     .sort((a, b) => b.v - a.v);
 
+  return {
+    gdpTop3: gdp.slice(0, 3),
+    lowestUnemp: unemployment[0] ?? null,
+    highestInfl: inflation[0] ?? null,
+  };
+}
+
+function buildTweet(insights: Insights): string {
   const week = getWeekNumber();
   const slug = getWeekSlug();
-  const top3 = gdp.slice(0, 3).map((c) => c.name).join(" · ");
-  const lowestUnemp = unemployment[0];
-  const highestInfl = inflation[0];
+  const top3 = insights.gdpTop3.map((c) => c.name).join(" · ");
 
   const lines = [
     `EU Economic Weekly — Week ${week}`,
     ``,
     `GDP top 3: ${top3}`,
-    lowestUnemp ? `Lowest unemployment: ${lowestUnemp.name} (${lowestUnemp.v.toFixed(1)}%)` : "",
-    highestInfl ? `Highest inflation: ${highestInfl.name} (HICP ${highestInfl.v.toFixed(1)})` : "",
+    insights.lowestUnemp
+      ? `Lowest unemployment: ${insights.lowestUnemp.name} (${insights.lowestUnemp.v.toFixed(1)}%)`
+      : "",
+    insights.highestInfl
+      ? `Highest inflation: ${insights.highestInfl.name} (HICP ${insights.highestInfl.v.toFixed(1)})`
+      : "",
     ``,
     `Full report → ${SITE_BASE}/reports/weekly-${slug}`,
   ].filter(Boolean);
 
   return lines.join("\n");
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Sanity checks — abort if numbers look like the data pipeline broke.
+// ──────────────────────────────────────────────────────────────────
+
+function sanityCheck(insights: Insights, tweet: string): string[] {
+  const errors: string[] = [];
+  const ANCHOR_GDP = ["Germany", "France", "Italy", "Spain"];
+
+  if (insights.gdpTop3.length < 3) {
+    errors.push(`GDP ranking has only ${insights.gdpTop3.length} entries (expected ≥ 3)`);
+  }
+  if (insights.gdpTop3.some((c) => c.v <= 0)) {
+    errors.push(`Zero/negative value in GDP top 3 — data loader likely broken`);
+  }
+  if (!insights.gdpTop3.some((c) => ANCHOR_GDP.includes(c.name))) {
+    errors.push(
+      `GDP top 3 (${insights.gdpTop3.map((c) => c.name).join(", ")}) contains none of {${ANCHOR_GDP.join(", ")}} — ` +
+        `EU's largest economies should always rank here`,
+    );
+  }
+
+  if (!insights.lowestUnemp) {
+    errors.push(`Missing unemployment data`);
+  } else if (insights.lowestUnemp.v < 0.5 || insights.lowestUnemp.v > 25) {
+    errors.push(
+      `Lowest unemployment ${insights.lowestUnemp.v.toFixed(1)}% outside plausible 0.5-25% range`,
+    );
+  }
+
+  if (!insights.highestInfl) {
+    errors.push(`Missing inflation data`);
+  } else if (insights.highestInfl.v < 90 || insights.highestInfl.v > 250) {
+    errors.push(
+      `Highest HICP ${insights.highestInfl.v.toFixed(1)} outside plausible 90-250 range (2015=100 base)`,
+    );
+  }
+
+  if (tweet.length < 100) errors.push(`Tweet body suspiciously short (${tweet.length} chars)`);
+  if (tweet.length > 280) errors.push(`Tweet body exceeds 280-char limit (${tweet.length})`);
+
+  return errors;
 }
 
 // ──────────────────────────────────────────────────────────────────
@@ -164,15 +223,19 @@ async function postTweet(text: string): Promise<void> {
 }
 
 async function main() {
-  const text = buildTweet();
+  const insights = buildInsights();
+  const text = buildTweet(insights);
   console.log("Tweet body:");
   console.log(text);
   console.log(`\nLength: ${text.length} chars (limit 280)`);
 
-  if (text.length > 280) {
-    console.error("Tweet too long.");
+  const errors = sanityCheck(insights, text);
+  if (errors.length > 0) {
+    console.error("\n[SANITY FAIL] aborting before post:");
+    for (const e of errors) console.error("  - " + e);
     process.exit(1);
   }
+  console.log("[SANITY OK] all checks passed.");
 
   if (process.env.DRY_RUN === "true") {
     console.log("DRY_RUN=true — not posting.");
