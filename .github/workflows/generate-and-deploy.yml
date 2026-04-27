@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   generate-build-deploy:
     runs-on: self-hosted
@@ -33,6 +36,23 @@ jobs:
 
       - name: Generate weekly report
         run: npx tsx scripts/generate-weekly-report.ts
+
+      # Persist newly-generated weekly reports to git BEFORE the X post step,
+      # so the archive accumulates and Monday's tweet links to a page that
+      # will still exist next week. Without this, actions/checkout cleans
+      # untracked weekly-* dirs and rsync --delete wipes them from prod.
+      - name: Commit new weekly reports
+        if: github.event_name == 'schedule'
+        run: |
+          git config user.name "aethar-bot"
+          git config user.email "bot@aethar.dev"
+          git add app/reports/
+          if ! git diff --staged --quiet; then
+            git commit -m "data: weekly report $(date -u +%Y-%m-%d) [skip ci]"
+            git push origin HEAD:main
+          else
+            echo "No new report files to commit."
+          fi
 
       # Post the new weekly report to @aethardev — runs only on Mondays
       # (ISO day-of-week 1) on the scheduled cron, so we tweet exactly once
