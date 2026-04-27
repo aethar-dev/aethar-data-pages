@@ -35,10 +35,26 @@ function formatDate(): string {
   return `${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+function getWeekNumber(): number {
+  const d = new Date();
+  return Math.ceil(((d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86400000 + 1) / 7);
+}
+
 function getWeekSlug(): string {
   const d = new Date();
-  const week = Math.ceil(((d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86400000 + 1) / 7);
-  return `${d.getFullYear()}-w${String(week).padStart(2, "0")}`;
+  return `${d.getFullYear()}-w${String(getWeekNumber()).padStart(2, "0")}`;
+}
+
+function getWeekRange(): string {
+  // Monday → Sunday range for the current ISO-ish week
+  const d = new Date();
+  const day = d.getUTCDay();
+  const monday = new Date(d);
+  monday.setUTCDate(d.getUTCDate() - ((day + 6) % 7));
+  const sunday = new Date(monday);
+  sunday.setUTCDate(monday.getUTCDate() + 6);
+  const fmt = (x: Date) => x.toISOString().slice(0, 10);
+  return `${fmt(monday)} – ${fmt(sunday)}`;
 }
 
 function generateInsights() {
@@ -85,6 +101,8 @@ function generateInsights() {
 function generatePage() {
   const weekSlug = getWeekSlug();
   const dateLabel = formatDate();
+  const weekNumber = getWeekNumber();
+  const weekRange = getWeekRange();
   const insights = generateInsights();
 
   const gdpRows = insights.gdpRanking.slice(0, 10).map(c =>
@@ -111,16 +129,17 @@ function generatePage() {
   const pageContent = `import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "EU Economic Weekly — ${dateLabel}",
-  description: "Weekly EU economic data digest: GDP rankings, inflation trends, unemployment rates across EU member states. ${dateLabel}.",
+  title: "EU Economic Weekly — Week ${weekNumber}, ${dateLabel}",
+  description: "Week ${weekNumber} EU economic digest (${weekRange}): GDP rankings, inflation trends, unemployment rates across EU member states. Data from Eurostat via Aethar APIs.",
+  alternates: { canonical: "/reports/weekly-${weekSlug}" },
 };
 
 export default function WeeklyReport() {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-widest text-[#4DD0E1]">Weekly Data Report</p>
-      <h1 className="mt-2 text-2xl font-light text-white">EU Economic Weekly — ${dateLabel}</h1>
-      <p className="mt-3 text-sm text-[#8890AA]">Auto-generated from live Eurostat data via Aethar APIs.</p>
+      <p className="text-xs font-semibold uppercase tracking-widest text-[#4DD0E1]">Weekly Data Report · Week ${weekNumber}</p>
+      <h1 className="mt-2 text-2xl font-light text-white">EU Economic Weekly — Week ${weekNumber}, ${dateLabel}</h1>
+      <p className="mt-3 text-sm text-[#8890AA]">${weekRange} · auto-generated from live Eurostat data via Aethar APIs.</p>
 
       {/* GDP */}
       <div className="mt-10">

@@ -53,6 +53,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entries.push({ url: `${BASE}/errors/${err.code}`, lastModified: now, changeFrequency: "weekly", priority: 0.5 });
   }
 
+  // Reports index
+  entries.push({ url: `${BASE}/reports`, lastModified: now, changeFrequency: "weekly", priority: 0.7 });
+
   // Report pages — discover from filesystem
   const reportsDir = join(process.cwd(), "app", "reports");
   if (existsSync(reportsDir)) {
