@@ -14,6 +14,8 @@ concurrency:
 jobs:
   generate-build-deploy:
     runs-on: self-hosted
+    outputs:
+      should_post: ${{ steps.preflight.outputs.should_post }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,6 +34,30 @@ jobs:
       - name: Generate weekly report
         run: npx tsx scripts/generate-weekly-report.ts
 
+      # Post the new weekly report to @aethardev — runs only on Mondays
+      # (ISO day-of-week 1) on the scheduled cron, so we tweet exactly once
+      # per week with the freshly-generated numbers. Manual workflow_dispatch
+      # runs skip this step entirely (avoid accidental double-post).
+      #
+      # Sanity checks live in the script (zero values, anchor-country presence,
+      # plausible HICP/unemployment ranges, length). Two-stage gate:
+      #   1. The job below FIRST does a DRY_RUN — script runs sanity checks
+      #      and prints the tweet body. If sanity fails, the job stops here.
+      #   2. The next job ('post-weekly-tweet') runs in the 'x-post' GitHub
+      #      Environment which requires manual reviewer approval. Only after
+      #      you approve in the GH Actions UI does the actual POST fire.
+      - name: Preflight tweet (dry-run + sanity)
+        id: preflight
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "$(date -u +%u)" = "1" ]; then
+            DRY_RUN=true npx tsx scripts/post-weekly-tweet.ts
+            echo "should_post=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Not Monday — skipping X post."
+            echo "should_post=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build
         run: npm run build
 
@@ -44,3 +70,40 @@ jobs:
           remote_host: ${{ secrets.VPS_HOST }}
           remote_user: ${{ secrets.VPS_USER }}
           remote_key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Upload generated data for X post job
+        if: steps.preflight.outputs.should_post == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-data
+          path: data/generated/
+          retention-days: 1
+
+  post-weekly-tweet:
+    needs: generate-build-deploy
+    if: needs.generate-build-deploy.outputs.should_post == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: self-hosted
+    environment:
+      name: x-post
+      url: https://x.com/aethardev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Download generated data
+        uses: actions/download-artifact@v4
+        with:
+          name: weekly-data
+          path: data/generated/
+
+      - name: Post tweet to @aethardev
+        run: npx tsx scripts/post-weekly-tweet.ts
+        env:
+          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}

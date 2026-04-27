@@ -11,10 +11,18 @@ import { join } from "path";
 const DATA_DIR = join(__dirname, "..", "data", "generated");
 const REPORTS_DIR = join(__dirname, "..", "app", "reports");
 
+interface Observation {
+  period?: string;
+  value?: number;
+  rate?: number;
+  population?: number;
+  index_value?: number;
+}
+
 interface CountryData {
   country: { code: string; name: string };
-  data: Record<string, unknown>[];
-  generatedAt: string;
+  data: { observations?: Observation[] };
+  generatedAt?: string;
 }
 
 function loadTopicData(topic: string): CountryData[] {
@@ -25,8 +33,16 @@ function loadTopicData(topic: string): CountryData[] {
     .map(f => JSON.parse(readFileSync(join(dir, f), "utf-8")));
 }
 
-function getVal(d: Record<string, unknown>): number {
-  return (d.value ?? d.rate ?? d.population ?? d.index_value ?? 0) as number;
+function getVal(o: Observation): number {
+  return o.value ?? o.rate ?? o.population ?? o.index_value ?? 0;
+}
+
+function latestObs(c: CountryData): Observation | undefined {
+  const obs = c.data.observations ?? [];
+  if (obs.length === 0) return undefined;
+  // Pick the most recent non-zero observation by period
+  const sorted = [...obs].sort((a, b) => (b.period ?? "").localeCompare(a.period ?? ""));
+  return sorted.find((o) => getVal(o) !== 0) ?? sorted[0];
 }
 
 function formatDate(): string {
@@ -50,32 +66,33 @@ function generateInsights() {
   // GDP: latest values ranked
   const gdpRanking = gdpData
     .map(c => {
-      const latest = c.data[c.data.length - 1];
-      return { name: c.country.name, code: c.country.code, value: latest ? getVal(latest as Record<string, unknown>) : 0 };
+      const obs = latestObs(c);
+      return { name: c.country.name, code: c.country.code, value: obs ? getVal(obs) : 0 };
     })
     .sort((a, b) => b.value - a.value);
 
   // Inflation: latest values ranked
   const inflationRanking = inflationData
     .map(c => {
-      const latest = c.data[c.data.length - 1];
-      return { name: c.country.name, code: c.country.code, value: latest ? getVal(latest as Record<string, unknown>) : 0 };
+      const obs = latestObs(c);
+      return { name: c.country.name, code: c.country.code, value: obs ? getVal(obs) : 0 };
     })
     .sort((a, b) => b.value - a.value);
 
-  // Unemployment: latest rates
+  // Unemployment: latest rates (lowest first; filter out zeros to avoid bogus leaders)
   const unemploymentRanking = unemploymentData
     .map(c => {
-      const latest = c.data[c.data.length - 1];
-      return { name: c.country.name, code: c.country.code, value: latest ? getVal(latest as Record<string, unknown>) : 0 };
+      const obs = latestObs(c);
+      return { name: c.country.name, code: c.country.code, value: obs ? getVal(obs) : 0 };
     })
+    .filter(c => c.value > 0)
     .sort((a, b) => a.value - b.value);
 
   // Population: latest
   const populationRanking = populationData
     .map(c => {
-      const latest = c.data[c.data.length - 1];
-      return { name: c.country.name, code: c.country.code, value: latest ? getVal(latest as Record<string, unknown>) : 0 };
+      const obs = latestObs(c);
+      return { name: c.country.name, code: c.country.code, value: obs ? getVal(obs) : 0 };
     })
     .sort((a, b) => b.value - a.value);
 
