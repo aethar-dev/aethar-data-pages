@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500" viewBox="0 0 1500 500" font-family="-apple-system, 'Segoe UI', Inter, Roboto, sans-serif">
+  <!-- Background -->
+  <rect width="1500" height="500" fill="#0F1117"/>
+
+  <!-- Subtle radial accent (top-right) -->
+  <defs>
+    <radialGradient id="glow" cx="80%" cy="20%" r="70%">
+      <stop offset="0%" stop-color="#4DD0E1" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#4DD0E1" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#0F1117" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1500" height="500" fill="url(#glow)"/>
+
+  <!-- Faint grid pattern (data-feel) -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2A2D3A" stroke-width="0.5" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect width="1500" height="500" fill="url(#grid)"/>
+
+  <!-- Left: brand mark (kept above ~y=300 to stay clear of X profile-pic overlay) -->
+  <g transform="translate(90, 0)">
+    <text x="0" y="155" fill="#FFFFFF" font-size="110" font-weight="200" letter-spacing="-3">Aethar</text>
+    <text x="0" y="200" fill="#4DD0E1" font-size="22" font-weight="500" letter-spacing="6" text-transform="uppercase">APIs · MCP · TOOLS</text>
+    <line x1="0" y1="225" x2="80" y2="225" stroke="#4DD0E1" stroke-width="2"/>
+    <text x="0" y="270" fill="#8890AA" font-size="20" font-weight="300">Production data infrastructure for developers.</text>
+  </g>
+
+  <!-- Right: product list -->
+  <g transform="translate(880, 130)" font-weight="400">
+    <text x="0" y="0" fill="#8890AA" font-size="14" letter-spacing="3">PRODUCTS</text>
+
+    <g transform="translate(0, 30)">
+      <text x="0" y="22" fill="#FFFFFF" font-size="24">WageAPI</text>
+      <text x="180" y="22" fill="#8890AA" font-size="16">salary &amp; cost-of-living</text>
+    </g>
+    <g transform="translate(0, 75)">
+      <text x="0" y="22" fill="#FFFFFF" font-size="24">CostAPI</text>
+      <text x="180" y="22" fill="#8890AA" font-size="16">CPI &amp; PPP across 48 countries</text>
+    </g>
+    <g transform="translate(0, 120)">
+      <text x="0" y="22" fill="#FFFFFF" font-size="24">EInvoiceAPI</text>
+      <text x="180" y="22" fill="#8890AA" font-size="16">EN 16931 · Peppol · XRechnung</text>
+    </g>
+    <g transform="translate(0, 165)">
+      <text x="0" y="22" fill="#FFFFFF" font-size="24">EurostatAPI</text>
+      <text x="180" y="22" fill="#8890AA" font-size="16">EU economic stats, JSON-stat</text>
+    </g>
+  </g>
+
+  <!-- Bottom-right accent -->
+  <text x="1410" y="460" fill="#2A2D3A" font-size="11" font-weight="400" letter-spacing="2" text-anchor="end">EU-HOSTED · MCP-NATIVE</text>
+</svg>
