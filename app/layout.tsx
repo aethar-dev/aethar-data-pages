@@ -23,11 +23,32 @@ export const metadata: Metadata = {
   verification: {
     google: "drTZ1LfndZigmDPLKG9lRe-6tNeg0kgGFLjNczjXtdk",
   },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aethardev",
+    creator: "@aethardev",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Aethar",
+  url: "https://aethar.dev",
+  description:
+    "Live EU economic statistics: GDP, inflation, unemployment, population, trade data for all European countries.",
+  sameAs: ["https://x.com/aethardev", "https://github.com/aethar-dev"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body>
         <div className="adp-shell">
           <nav className="adp-nav">
@@ -59,6 +80,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p style={{ marginTop: 4 }}>
               Updated daily. Free API access at{" "}
               <a href="https://console.aethar.dev">console.aethar.dev</a>
+            </p>
+            <p style={{ marginTop: 8 }}>
+              <a
+                href="https://x.com/aethardev"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Aethar on X"
+                style={{ display: "inline-flex", alignItems: "center" }}
+              >
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
             </p>
           </footer>
         </div>
