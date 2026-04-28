@@ -37,7 +37,19 @@ jobs:
       - name: Generate weekly report
         run: npx tsx scripts/generate-weekly-report.ts
 
-      # Persist newly-generated weekly reports to git BEFORE the X post step,
+      # Monthly report — runs only on the 1st of each month so we get one
+      # archived monthly digest per /reports/monthly-YYYY-MM. Same persist
+      # mechanism as weekly (committed on next step).
+      - name: Generate monthly report
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "$(date -u +%d)" = "01" ]; then
+            npx tsx scripts/generate-monthly-report.ts
+          else
+            echo "Not the 1st — skipping monthly report."
+          fi
+
+      # Persist newly-generated weekly + monthly reports to git BEFORE the X post step,
       # so the archive accumulates and Monday's tweet links to a page that
       # will still exist next week. Without this, actions/checkout cleans
       # untracked weekly-* dirs and rsync --delete wipes them from prod.

@@ -14,7 +14,7 @@ interface ReportEntry {
   slug: string;
   title: string;
   description: string;
-  kind: "weekly" | "snapshot";
+  kind: "weekly" | "monthly" | "snapshot";
 }
 
 function listReports(): ReportEntry[] {
@@ -38,12 +38,11 @@ function listReports(): ReportEntry[] {
       continue;
     }
 
-    entries.push({
-      slug,
-      title,
-      description,
-      kind: slug.startsWith("weekly-") ? "weekly" : "snapshot",
-    });
+    let kind: ReportEntry["kind"] = "snapshot";
+    if (slug.startsWith("weekly-")) kind = "weekly";
+    else if (slug.startsWith("monthly-")) kind = "monthly";
+
+    entries.push({ slug, title, description, kind });
   }
 
   // Sort newest first by slug (weekly-YYYY-wNN sorts naturally; snapshots fall after)
@@ -52,6 +51,7 @@ function listReports(): ReportEntry[] {
 
 export default function ReportsIndex() {
   const reports = listReports();
+  const monthly = reports.filter((r) => r.kind === "monthly");
   const weekly = reports.filter((r) => r.kind === "weekly");
   const snapshots = reports.filter((r) => r.kind === "snapshot");
 
@@ -65,6 +65,29 @@ export default function ReportsIndex() {
         Weekly EU economic digests auto-generated from live Eurostat data via
         Aethar APIs, plus periodic deep-dive snapshots.
       </p>
+
+      {monthly.length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-lg font-semibold text-white">Monthly</h2>
+          <ul className="mt-4 divide-y divide-[#2A2D3A]/50 border-y border-[#2A2D3A]/50">
+            {monthly.map((r) => (
+              <li key={r.slug}>
+                <Link
+                  href={`/reports/${r.slug}`}
+                  className="block py-4 transition-colors hover:bg-[#4DD0E1]/5"
+                >
+                  <p className="text-sm font-medium text-white">{r.title}</p>
+                  {r.description && (
+                    <p className="mt-1 text-xs text-[#8890AA]">
+                      {r.description}
+                    </p>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {weekly.length > 0 && (
         <div className="mt-10">
