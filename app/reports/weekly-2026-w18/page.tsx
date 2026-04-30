@@ -124,7 +124,7 @@ export default function WeeklyReport() {
           <tbody>
               <tr key="CZ" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Czechia</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">2.9%</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">3.4%</td>
               </tr>
               <tr key="DE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Germany</td>
@@ -136,7 +136,7 @@ export default function WeeklyReport() {
               </tr>
               <tr key="HU" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Hungary</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">4.2%</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">4.4%</td>
               </tr>
               <tr key="PL" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Poland</td>
@@ -144,7 +144,7 @@ export default function WeeklyReport() {
               </tr>
               <tr key="LU" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Luxembourg</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">5.5%</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">5.6%</td>
               </tr>
               <tr key="DK" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Denmark</td>
@@ -152,15 +152,15 @@ export default function WeeklyReport() {
               </tr>
               <tr key="AT" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Austria</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.1%</td>
-              </tr>
-              <tr key="NL" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Netherlands</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.1%</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.0%</td>
               </tr>
               <tr key="RO" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Romania</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.3%</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.0%</td>
+              </tr>
+              <tr key="EE" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Estonia</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.1%</td>
               </tr>
           </tbody>
         </table>
