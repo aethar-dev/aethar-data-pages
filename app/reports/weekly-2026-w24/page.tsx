@@ -56,9 +56,9 @@ export default function WeeklyReport() {
                 <td className="py-2 pr-4 text-sm text-white">Austria</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">77,761.9</td>
               </tr>
-              <tr key="DK" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Denmark</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">64,754.9</td>
+              <tr key="IE" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Ireland</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">59,568.3</td>
               </tr>
           </tbody>
         </table>
@@ -138,6 +138,10 @@ export default function WeeklyReport() {
                 <td className="py-2 pr-4 text-sm text-white">Austria</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.0%</td>
               </tr>
+              <tr key="HU" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Hungary</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.0%</td>
+              </tr>
               <tr key="DK" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Denmark</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">6.2%</td>
@@ -157,10 +161,6 @@ export default function WeeklyReport() {
               <tr key="SE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Sweden</td>
                 <td className="py-2 text-right font-mono text-sm text-red-400">7.3%</td>
-              </tr>
-              <tr key="NL" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Netherlands</td>
-                <td className="py-2 text-right font-mono text-sm text-red-400">7.9%</td>
               </tr>
           </tbody>
         </table>
