@@ -79,6 +79,10 @@ export default function WeeklyReport() {
                 <td className="py-2 pr-4 text-sm text-white">Cyprus</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.4</td>
               </tr>
+              <tr key="HR" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Croatia</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.0</td>
+              </tr>
               <tr key="DE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Germany</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.8</td>
@@ -98,10 +102,6 @@ export default function WeeklyReport() {
               <tr key="LU" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Luxembourg</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.5</td>
-              </tr>
-              <tr key="BG" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Bulgaria</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.4</td>
               </tr>
               <tr key="EE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Estonia</td>
