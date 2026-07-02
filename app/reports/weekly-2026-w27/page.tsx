@@ -22,7 +22,7 @@ export default function WeeklyReport() {
           <tbody>
               <tr key="DE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Germany</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">712,048</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">708,245.7</td>
               </tr>
               <tr key="FR" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">France</td>
