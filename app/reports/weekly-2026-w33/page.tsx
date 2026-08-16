@@ -24,6 +24,14 @@ export default function WeeklyReport() {
                 <td className="py-2 pr-4 text-sm text-white">Germany</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">708,245.7</td>
               </tr>
+              <tr key="FR" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">France</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">526,219.3</td>
+              </tr>
+              <tr key="IT" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Italy</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">390,668.4</td>
+              </tr>
               <tr key="ES" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Spain</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">269,547</td>
@@ -31,6 +39,10 @@ export default function WeeklyReport() {
               <tr key="NL" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Netherlands</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">167,670.8</td>
+              </tr>
+              <tr key="PL" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Poland</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">104,348.1</td>
               </tr>
               <tr key="SE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Sweden</td>
@@ -47,18 +59,6 @@ export default function WeeklyReport() {
               <tr key="DK" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Denmark</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">64,651.4</td>
-              </tr>
-              <tr key="IE" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Ireland</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">57,657</td>
-              </tr>
-              <tr key="FI" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Finland</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">47,078.5</td>
-              </tr>
-              <tr key="GR" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Greece</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">45,676.4</td>
               </tr>
           </tbody>
         </table>
