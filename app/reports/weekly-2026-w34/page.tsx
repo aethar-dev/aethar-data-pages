@@ -73,43 +73,43 @@ export default function WeeklyReport() {
           <tbody>
               <tr key="RO" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Romania</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">102.2</td>
-              </tr>
-              <tr key="LV" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Latvia</td>
                 <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.5</td>
               </tr>
               <tr key="ES" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Spain</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.3</td>
-              </tr>
-              <tr key="MT" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Malta</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.3</td>
-              </tr>
-              <tr key="CY" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Cyprus</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.0</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.8</td>
               </tr>
               <tr key="NL" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Netherlands</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.0</td>
-              </tr>
-              <tr key="LT" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Lithuania</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101.0</td>
-              </tr>
-              <tr key="PT" className="border-b border-[#2A2D3A]/50">
-                <td className="py-2 pr-4 text-sm text-white">Portugal</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.9</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.7</td>
               </tr>
               <tr key="IT" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Italy</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.9</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.7</td>
+              </tr>
+              <tr key="BG" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Bulgaria</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.7</td>
+              </tr>
+              <tr key="LV" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Latvia</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.7</td>
               </tr>
               <tr key="EE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Estonia</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.9</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.5</td>
+              </tr>
+              <tr key="GR" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Greece</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.5</td>
+              </tr>
+              <tr key="DK" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Denmark</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.4</td>
+              </tr>
+              <tr key="PT" className="border-b border-[#2A2D3A]/50">
+                <td className="py-2 pr-4 text-sm text-white">Portugal</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">100.4</td>
               </tr>
           </tbody>
         </table>
