@@ -26,39 +26,39 @@ export default function WeeklyReport() {
               </tr>
               <tr key="FR" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">France</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">526,219.3</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">525,881.8</td>
               </tr>
               <tr key="IT" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Italy</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">390,668.4</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">388,996.5</td>
               </tr>
               <tr key="ES" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Spain</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">269,547</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">266,562.2</td>
               </tr>
               <tr key="NL" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Netherlands</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">167,670.8</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">166,961.9</td>
               </tr>
               <tr key="PL" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Poland</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">104,348.1</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">103,756.1</td>
               </tr>
               <tr key="SE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Sweden</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">103,600.9</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">101,260.7</td>
               </tr>
               <tr key="BE" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Belgium</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">96,047.1</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">95,602.6</td>
               </tr>
               <tr key="AT" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Austria</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">77,472.5</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">77,038.8</td>
               </tr>
               <tr key="DK" className="border-b border-[#2A2D3A]/50">
                 <td className="py-2 pr-4 text-sm text-white">Denmark</td>
-                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">64,651.4</td>
+                <td className="py-2 text-right font-mono text-sm text-[#4DD0E1]">64,230.6</td>
               </tr>
           </tbody>
         </table>
