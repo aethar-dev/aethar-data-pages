@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "EU Economic Weekly — Week 44, October 2026",
+  title: "EU Economic Weekly — Week 44, November 2026",
   description: "Week 44 EU economic digest (2026-10-26 – 2026-11-01): GDP rankings, inflation trends, unemployment rates across EU member states. Data from Eurostat via Aethar APIs.",
   alternates: { canonical: "/reports/weekly-2026-w44" },
 };
@@ -10,7 +10,7 @@ export default function WeeklyReport() {
   return (
     <div>
       <p className="text-xs font-semibold uppercase tracking-widest text-[#4DD0E1]">Weekly Data Report · Week 44</p>
-      <h1 className="mt-2 text-2xl font-light text-white">EU Economic Weekly — Week 44, October 2026</h1>
+      <h1 className="mt-2 text-2xl font-light text-white">EU Economic Weekly — Week 44, November 2026</h1>
       <p className="mt-3 text-sm text-[#8890AA]">2026-10-26 – 2026-11-01 · auto-generated from live Eurostat data via Aethar APIs.</p>
 
       {/* GDP */}
